@@ -88,7 +88,6 @@ private:
   std::string   uri;
   unsigned long long frequency;
   unsigned long samplerate;
-  unsigned long decimation;
   unsigned long bandwidth;
   unsigned long buffer_size;
   bool quadrature;

@@ -39,7 +39,6 @@ plutosdr_source_c::plutosdr_source_c(const std::string &args) :
   uri = "ip:pluto.local";
   frequency = 434000000;
   samplerate = 2500000;
-  decimation = 0;
   bandwidth = 2000000;
   buffer_size = 0x4000;
   quadrature = true;
@@ -57,7 +56,7 @@ plutosdr_source_c::plutosdr_source_c(const std::string &args) :
   std::cerr << "Using PlutoSDR URI = " << uri << std::endl;
 
   _src = gr::iio::pluto_source::make(uri.c_str(), frequency, samplerate,
-                                     decimation, bandwidth, buffer_size,
+                                     bandwidth, buffer_size,
                                      quadrature, rfdc, bbdc,
                                      "manual", gain_value,
                                      filter.c_str(), filter_auto);
