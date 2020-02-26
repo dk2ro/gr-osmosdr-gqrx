@@ -167,6 +167,14 @@ GR_INCLUDE_SUBDIRECTORY(uhd)
 endif(ENABLE_UHD)
 
 ########################################################################
+# Setup IIO component
+########################################################################
+GR_REGISTER_COMPONENT("IIO Devices" ENABLE_IIO GNURADIO_IIO_FOUND)
+if(ENABLE_IIO)
+GR_INCLUDE_SUBDIRECTORY(plutosdr)
+endif(ENABLE_IIO)
+
+########################################################################
 # Setup MiriSDR component
 ########################################################################
 GR_REGISTER_COMPONENT("Osmocom MiriSDR" ENABLE_MIRI LIBMIRISDR_FOUND)
@@ -215,6 +223,14 @@ GR_REGISTER_COMPONENT("AIRSPY Receiver" ENABLE_AIRSPY LIBAIRSPY_FOUND)
 if(ENABLE_AIRSPY)
 GR_INCLUDE_SUBDIRECTORY(airspy)
 endif(ENABLE_AIRSPY)
+
+########################################################################
+# Setup AIRSPYHF component
+########################################################################
+GR_REGISTER_COMPONENT("AIRSPY HF+ Receiver" ENABLE_AIRSPYHF LIBAIRSPYHF_FOUND)
+if(ENABLE_AIRSPYHF)
+GR_INCLUDE_SUBDIRECTORY(airspyhf)
+endif(ENABLE_AIRSPYHF)
 
 ########################################################################
 # Setup SoapySDR component

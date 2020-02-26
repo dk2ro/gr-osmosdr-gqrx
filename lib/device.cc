@@ -54,6 +54,10 @@
 #include <uhd_source_c.h>
 #endif
 
+#ifdef ENABLE_IIO
+#include <plutosdr_source_c.h>
+#endif
+
 #ifdef ENABLE_MIRI
 #include <miri_source_c.h>
 #endif
@@ -76,6 +80,10 @@
 
 #ifdef ENABLE_AIRSPY
 #include <airspy_source_c.h>
+#endif
+
+#ifdef ENABLE_AIRSPYHF
+#include <airspyhf_source_c.h>
 #endif
 
 #ifdef ENABLE_SOAPY
@@ -162,6 +170,10 @@ devices_t device::find(const device_t &hint)
   BOOST_FOREACH( std::string dev, uhd_source_c::get_devices() )
     devices.push_back( device_t(dev) );
 #endif
+#ifdef ENABLE_IIO
+  BOOST_FOREACH( std::string dev, plutosdr_source_c::get_devices() )
+    devices.push_back( device_t(dev) );
+#endif
 #ifdef ENABLE_MIRI
   BOOST_FOREACH( std::string dev, miri_source_c::get_devices() )
     devices.push_back( device_t(dev) );
@@ -184,6 +196,10 @@ devices_t device::find(const device_t &hint)
 #endif
 #ifdef ENABLE_AIRSPY
   BOOST_FOREACH( std::string dev, airspy_source_c::get_devices() )
+    devices.push_back( device_t(dev) );
+#endif
+#ifdef ENABLE_AIRSPYHF
+  BOOST_FOREACH( std::string dev, airspyhf_source_c::get_devices() )
     devices.push_back( device_t(dev) );
 #endif
 #ifdef ENABLE_FREESRP

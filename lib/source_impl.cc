@@ -56,6 +56,10 @@
 #include <uhd_source_c.h>
 #endif
 
+#ifdef ENABLE_IIO
+#include <plutosdr_source_c.h>
+#endif
+
 #ifdef ENABLE_MIRI
 #include <miri_source_c.h>
 #endif
@@ -78,6 +82,10 @@
 
 #ifdef ENABLE_AIRSPY
 #include <airspy_source_c.h>
+#endif
+
+#ifdef ENABLE_AIRSPYHF
+#include <airspyhf_source_c.h>
 #endif
 
 #ifdef ENABLE_SOAPY
@@ -139,6 +147,9 @@ source_impl::source_impl( const std::string &args )
 #ifdef ENABLE_UHD
   dev_types.push_back("uhd");
 #endif
+#ifdef ENABLE_IIO
+  dev_types.push_back("plutosdr");
+#endif
 #ifdef ENABLE_MIRI
   dev_types.push_back("miri");
 #endif
@@ -156,6 +167,9 @@ source_impl::source_impl( const std::string &args )
 #endif
 #ifdef ENABLE_AIRSPY
   dev_types.push_back("airspy");
+#endif
+#ifdef ENABLE_AIRSPYHF
+  dev_types.push_back("airspyhf");
 #endif
 #ifdef ENABLE_SOAPY
   dev_types.push_back("soapy");
@@ -209,6 +223,10 @@ source_impl::source_impl( const std::string &args )
     BOOST_FOREACH( std::string dev, uhd_source_c::get_devices() )
       dev_list.push_back( dev );
 #endif
+#ifdef ENABLE_IIO
+    BOOST_FOREACH( std::string dev, plutosdr_source_c::get_devices() )
+      dev_list.push_back( dev );
+#endif
 #ifdef ENABLE_MIRI
     BOOST_FOREACH( std::string dev, miri_source_c::get_devices() )
       dev_list.push_back( dev );
@@ -231,6 +249,10 @@ source_impl::source_impl( const std::string &args )
 #endif
 #ifdef ENABLE_AIRSPY
     BOOST_FOREACH( std::string dev, airspy_source_c::get_devices() )
+      dev_list.push_back( dev );
+#endif
+#ifdef ENABLE_AIRSPYHF
+    BOOST_FOREACH( std::string dev, airspyhf_source_c::get_devices() )
       dev_list.push_back( dev );
 #endif
 #ifdef ENABLE_SOAPY
@@ -309,6 +331,13 @@ source_impl::source_impl( const std::string &args )
     }
 #endif
 
+#ifdef ENABLE_IIO
+    if ( dict.count("plutosdr") ) {
+      plutosdr_source_c_sptr src = make_plutosdr_source_c( arg );
+      block = src; iface = src.get();
+    }
+#endif
+
 #ifdef ENABLE_MIRI
     if ( dict.count("miri") ) {
       miri_source_c_sptr src = make_miri_source_c( arg );
@@ -351,6 +380,13 @@ source_impl::source_impl( const std::string &args )
 #ifdef ENABLE_AIRSPY
     if ( dict.count("airspy") ) {
       airspy_source_c_sptr src = make_airspy_source_c( arg );
+      block = src; iface = src.get();
+    }
+#endif
+
+#ifdef ENABLE_AIRSPYHF
+    if ( dict.count("airspyhf") ) {
+      airspyhf_source_c_sptr src = make_airspyhf_source_c( arg );
       block = src; iface = src.get();
     }
 #endif
