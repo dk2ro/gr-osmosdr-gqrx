@@ -55,11 +55,20 @@ plutosdr_source_c::plutosdr_source_c(const std::string &args) :
 
   std::cerr << "Using PlutoSDR URI = " << uri << std::endl;
 
-  _src = gr::iio::pluto_source::make(uri.c_str(), frequency, samplerate,
+  _src = gr::iio::fmcomms2_source<std::complex<float>>::make(uri.c_str(),{true,true}, buffer_size);
+  _src->set_samplerate(samplerate);
+  _src->set_frequency(frequency);
+  _src->set_gain_mode(0, "manual");
+  _src->set_gain(0, gain_value);
+  _src->set_rfdc(rfdc);
+  _src->set_bbdc(bbdc);
+
+		  /*
+		  , frequency, samplerate,
                                      bandwidth, buffer_size,
                                      quadrature, rfdc, bbdc,
                                      "manual", gain_value,
-                                     filter.c_str(), filter_auto);
+                                     filter.c_str(), filter_auto);*/
 
   connect( _src, 0, self(), 0 );
 }
@@ -126,8 +135,8 @@ osmosdr::freq_range_t plutosdr_source_c::get_freq_range( size_t chan )
 double plutosdr_source_c::set_center_freq( double freq, size_t chan )
 {
   frequency = (unsigned long long) freq;
-  set_params();
 
+  _src->set_frequency(frequency);
   return freq;
 }
 
@@ -190,7 +199,7 @@ bool plutosdr_source_c::get_gain_mode( size_t chan )
 double plutosdr_source_c::set_gain( double gain, size_t chan )
 {
   gain_value = gain;
-  set_params();
+  _src->set_gain(0, gain_value);
 
   return gain;
 }
@@ -198,7 +207,7 @@ double plutosdr_source_c::set_gain( double gain, size_t chan )
 double plutosdr_source_c::set_gain( double gain, const std::string & name, size_t chan )
 {
   gain_value = gain;
-  set_params();
+  _src->set_gain(0, gain_value);
 
   return gain;
 }
@@ -250,7 +259,14 @@ double plutosdr_source_c::get_bandwidth( size_t chan )
 void plutosdr_source_c::set_params( void )
 {
   // FIXME: gain_mode string can be manual / slow_attack / fast_attack / hybrid
-  _src->set_params( frequency, samplerate, bandwidth, quadrature, rfdc, bbdc,
+  /*_src->set_params( frequency, samplerate, bandwidth, quadrature, rfdc, bbdc,
                     gain_auto ? "fast_attack" : "manual", gain_value,
-                    filter.c_str(), filter_auto );
+                    filter.c_str(), filter_auto ); */
+   _src->set_samplerate(samplerate);
+  _src->set_frequency(frequency);
+  _src->set_gain_mode(0, "manual");
+  _src->set_gain(0, gain_value);
+  _src->set_rfdc(rfdc);
+  _src->set_bbdc(bbdc);
+  _src->set_filter_params("Auto");
 }

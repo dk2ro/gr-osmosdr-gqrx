@@ -23,13 +23,13 @@
 #include <gnuradio/blocks/float_to_complex.h>
 #include <gnuradio/blocks/short_to_float.h>
 #include <gnuradio/hier_block2.h>
-#include <gnuradio/iio/pluto_source.h>
+#include <gnuradio/iio/fmcomms2_source.h>
 
 #include "source_iface.h"
 
 class plutosdr_source_c;
 
-typedef boost::shared_ptr< plutosdr_source_c > plutosdr_source_c_sptr;
+typedef std::shared_ptr< plutosdr_source_c > plutosdr_source_c_sptr;
 
 plutosdr_source_c_sptr make_plutosdr_source_c(const std::string &args = "");
 
@@ -82,8 +82,7 @@ public:
 private:
 
   void set_params(void);
-
-  gr::iio::pluto_source::sptr       _src;
+gr::iio::fmcomms2_source<std::complex<float>>::sptr       _src;
 
   std::string   uri;
   unsigned long long frequency;
